@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plant_app">
+    <!-- Granting camera Permission on Android -->
+    <uses-permission android:name="adnroid.permission.CAMERA"/>
+    <!-- Granting camera Permission on Android -->
    <application
         android:label="plant_app"
         android:name="${applicationName}"

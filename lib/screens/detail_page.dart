@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'package:plant_app/const/constans.dart';
 import 'package:plant_app/models/plant.dart';
+import 'package:plant_app/screens/cart_page.dart';
+import 'package:plant_app/screens/home_page.dart';
+import 'package:plant_app/screens/root.dart';
 import 'package:plant_app/widgets/extensions.dart';
 
 class DetailPage extends StatefulWidget {
@@ -16,6 +20,10 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool toggleIsSelected(bool isSelected) {
+    return !isSelected;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -243,9 +251,20 @@ class _DetailPageState extends State<DetailPage> {
                       color: Constants.primaryColor.withOpacity(0.3))
                 ],
               ),
-              child: const Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                        child: CartPage(
+                            addedToCartPlants: Plant.addedToCartPlants()),
+                        type: PageTransitionType.fade,
+                      ));
+                },
+                child: const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(width: 20.0),
@@ -261,13 +280,22 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                   color: Constants.primaryColor,
                 ),
-                child: const Center(
-                  child: Text(
-                    'افزودن به سبد خرید',
-                    style: TextStyle(
-                      fontFamily: 'LaleZar',
-                      color: Colors.white,
-                      fontSize: 20.0,
+                child: Center(
+                  child: InkResponse(
+                    onTap: () {
+                      setState(() {
+                        bool isSelected = toggleIsSelected(
+                            plantList[widget.plantId].isSelected);
+                        plantList[widget.plantId].isSelected = isSelected;
+                      });
+                    },
+                    child: const Text(
+                      'افزودن به سبد خرید',
+                      style: TextStyle(
+                        fontFamily: 'LaleZar',
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
                     ),
                   ),
                 ),
