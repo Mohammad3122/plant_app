@@ -39,8 +39,17 @@ dependencies:
   page_transition: ^2.0.9
   # mobile_scanner: ^3.2.0
   mobile_scanner: ^2.1.0
+  flutter_launcher_icons: ^0.13.0
 
 dev_dependencies:
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/launcher_icon/demo_icon.png"
+  adaptive_icon_background: "#286E28"
+  adaptive_icon_foreground: "assets/launcher_icon/demo_icon.png"
+
   flutter_test:
     sdk: flutter
 
