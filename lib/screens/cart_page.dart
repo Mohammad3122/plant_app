@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/const/constans.dart';
 import 'package:plant_app/models/plant.dart';
+import 'package:plant_app/widgets/cart_plant_widget.dart';
 import 'package:plant_app/widgets/extensions.dart';
-import 'package:plant_app/widgets/plant_widget.dart';
 
 class CartPage extends StatefulWidget {
   final List<Plant> addedToCartPlants;
@@ -17,9 +17,21 @@ class CartPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<CartPage> {
+  int calculateTotalPrice() {
+    int total = 0;
+    if (widget.addedToCartPlants.isEmpty) {
+      total = 0;
+    } else {
+      for (Plant data in widget.addedToCartPlants) {
+        total = total + data.price;
+      }
+    }
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: widget.addedToCartPlants.isEmpty
           ? Center(
@@ -59,7 +71,7 @@ class _ScanPageState extends State<CartPage> {
                       physics: const BouncingScrollPhysics(),
                       itemCount: widget.addedToCartPlants.length,
                       itemBuilder: (context, index) {
-                        return NewPlantWidget(
+                        return CartPlantWidget(
                           plantList: widget.addedToCartPlants,
                           index: index,
                         );
@@ -83,7 +95,7 @@ class _ScanPageState extends State<CartPage> {
                               ),
                               const SizedBox(width: 5.0),
                               Text(
-                                '5000'.fariNumber,
+                                "${calculateTotalPrice()}".fariNumber,
                                 style: TextStyle(
                                   fontFamily: 'Lalezar',
                                   color: Constants.primaryColor,

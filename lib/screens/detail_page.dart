@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
+import 'package:page_transition/page_transition.dart';
+import 'package:plant_app/animations/fade_animations.dart';
 import 'package:plant_app/const/constans.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/screens/cart_page.dart';
-import 'package:plant_app/screens/home_page.dart';
-import 'package:plant_app/screens/root.dart';
+import 'package:plant_app/widgets/app_methods.dart';
 import 'package:plant_app/widgets/extensions.dart';
 
 class DetailPage extends StatefulWidget {
   final int plantId;
+
   const DetailPage({
     super.key,
     required this.plantId,
@@ -28,6 +29,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     List<Plant> plantList = Plant.plantList;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -216,15 +218,18 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                   const SizedBox(height: 15.0),
-                  Text(
-                    plantList[widget.plantId].decription,
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontFamily: 'iranSans',
-                      color: Constants.blackColor.withOpacity(0.7),
-                      height: 1.6,
-                      fontSize: 15.0,
+                  FadeAnimation(
+                    delay: 0.5,
+                    child: Text(
+                      plantList[widget.plantId].decription,
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontFamily: 'iranSans',
+                        color: Constants.blackColor.withOpacity(0.7),
+                        height: 1.6,
+                        fontSize: 15.0,
+                      ),
                     ),
                   ),
                 ],
@@ -238,73 +243,113 @@ class _DetailPageState extends State<DetailPage> {
         height: 50.0,
         child: Row(
           children: [
-            Container(
-              height: 50.0,
-              width: 50.0,
-              decoration: BoxDecoration(
-                color: Constants.primaryColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(50.0),
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0.0, 1.1),
-                      blurRadius: 5.0,
-                      color: Constants.primaryColor.withOpacity(0.3))
-                ],
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                        child: CartPage(
-                            addedToCartPlants: Plant.addedToCartPlants()),
-                        type: PageTransitionType.fade,
-                      ));
-                },
-                child: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(width: 20.0),
-            Expanded(
+            FadeAnimation(
+              delay: 1,
               child: Container(
+                height: 50.0,
+                width: 50.0,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
+                  color: Constants.primaryColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(50.0),
                   boxShadow: [
                     BoxShadow(
                         offset: const Offset(0.0, 1.1),
                         blurRadius: 5.0,
-                        color: Constants.primaryColor.withOpacity(0.3))
+                        color: Constants.primaryColor.withOpacity(0.5))
                   ],
-                  color: Constants.primaryColor,
                 ),
-                child: Center(
-                  child: InkResponse(
-                    onTap: () {
-                      setState(() {
-                        bool isSelected = toggleIsSelected(
-                            plantList[widget.plantId].isSelected);
-                        plantList[widget.plantId].isSelected = isSelected;
-                      });
-                    },
-                    child: const Text(
-                      'افزودن به سبد خرید',
-                      style: TextStyle(
-                        fontFamily: 'LaleZar',
-                        color: Colors.white,
-                        fontSize: 20.0,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                          child: CartPage(
+                              addedToCartPlants: Plant.addedToCartPlants()),
+                          type: PageTransitionType.fade,
+                        ));
+                  },
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                        top: 12,
+                        left: 13,
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        bottom: 8,
+                        left: 25,
+                        child: SizedBox(
+                          width: 30,
+                          height: 50,
+                          // color: Colors.red,
+                          child: Text(
+                            "${changeCartNumber(
+                              CartPage(
+                                addedToCartPlants: Plant.addedToCartPlants(),
+                              ),
+                            )}"
+                                .fariNumber,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 25,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            )
+            ),
+            const SizedBox(width: 20.0),
+            FadeAnimation(
+              delay: 1,
+              child: MaterialButton(
+                onPressed: () {
+                  setState(() {
+                    bool isSelected =
+                        toggleIsSelected(plantList[widget.plantId].isSelected);
+                    plantList[widget.plantId].isSelected = isSelected;
+                    AddToCart.addToCart(isSelected, context);
+                  });
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                splashColor: const Color.fromARGB(255, 29, 99, 2),
+                minWidth: size.width * 0.7,
+                height: size.height * 0.9,
+                color: Constants.primaryColor,
+                child: const Text(
+                  'افزودن به سبد خرید',
+                  style: TextStyle(
+                    fontFamily: 'LaleZar',
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  int changeCartNumber(CartPage cartPage) {
+    int sabad = 0;
+    setState(() {
+      if (cartPage.addedToCartPlants.isEmpty) {
+        sabad = 0;
+      } else {
+        sabad = cartPage.addedToCartPlants.length;
+      }
+    });
+    return sabad;
   }
 }
 

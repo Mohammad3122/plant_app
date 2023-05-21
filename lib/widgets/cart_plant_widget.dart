@@ -6,15 +6,21 @@ import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/screens/detail_page.dart';
 import 'package:plant_app/widgets/extensions.dart';
 
-class NewPlantWidget extends StatelessWidget {
+class CartPlantWidget extends StatefulWidget {
   final List<Plant> _plantList;
   final int index;
-  const NewPlantWidget({
+
+  const CartPlantWidget({
     super.key,
     required List<Plant> plantList,
     required this.index,
   }) : _plantList = plantList;
 
+  @override
+  State<CartPlantWidget> createState() => _CartPlantWidgetState();
+}
+
+class _CartPlantWidgetState extends State<CartPlantWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,7 +30,7 @@ class NewPlantWidget extends StatelessWidget {
           context,
           PageTransition(
             child: DetailPage(
-              plantId: _plantList[index].plantId,
+              plantId: widget._plantList[widget.index].plantId,
             ),
             type: PageTransitionType.fade,
           ),
@@ -51,7 +57,7 @@ class NewPlantWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 5.0),
                 Text(
-                  _plantList[index].price.toString().fariNumber,
+                  widget._plantList[widget.index].price.toString().fariNumber,
                   style: TextStyle(
                     fontFamily: 'Lalezar',
                     color: Constants.primaryColor,
@@ -77,7 +83,8 @@ class NewPlantWidget extends StatelessWidget {
                   right: 0,
                   child: SizedBox(
                     height: 80.0,
-                    child: Image.asset(_plantList[index].imageURL),
+                    child:
+                        Image.asset(widget._plantList[widget.index].imageURL),
                   ),
                 ),
                 Positioned(
@@ -87,14 +94,14 @@ class NewPlantWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        _plantList[index].category,
+                        widget._plantList[widget.index].category,
                         style: const TextStyle(
                           fontSize: 13.0,
                           fontFamily: 'YekanBakh',
                         ),
                       ),
                       Text(
-                        _plantList[index].plantName,
+                        widget._plantList[widget.index].plantName,
                         style: TextStyle(
                             fontSize: 18.0,
                             fontFamily: 'YekanBakh',

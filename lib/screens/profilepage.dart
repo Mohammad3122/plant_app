@@ -74,9 +74,9 @@ class _ScanPageState extends State<ProfilePage> {
             // End Profile Email
             const SizedBox(height: 30.0),
             // Profile Options
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 // Back Button
                 BuildOptions(title: 'پروفایل من', icon: Icons.person),
                 BuildOptions(title: 'تنظیمات', icon: Icons.settings),

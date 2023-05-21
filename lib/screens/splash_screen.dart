@@ -50,7 +50,13 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0, right: 20.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RootPage(),
+                    ));
+              },
               child: const Text(
                 'رد کردن',
                 style: TextStyle(
@@ -194,4 +200,3 @@ class CreatePage extends StatelessWidget {
     );
   }
 }
-

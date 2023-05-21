@@ -82,7 +82,7 @@ class _RootPageState extends State<RootPage> {
           Navigator.push(
             context,
             PageTransition(
-              child: ScanPage(),
+              child: const ScanPage(),
               type: PageTransitionType.bottomToTop,
             ),
           );

@@ -20,6 +20,9 @@ dependencies:
   mobile_scanner: ^2.1.0
   flutter_launcher_icons: ^0.13.0
   get: ^4.6.5
+  advance_notification: ^1.0.6
+  simple_animations: ^4.0.1
+  supercharged: ^2.1.1
 
 dev_dependencies:
  flutter_test:
